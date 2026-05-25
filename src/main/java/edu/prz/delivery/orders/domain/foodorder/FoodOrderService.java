@@ -1,4 +1,4 @@
-vvvvvvvvvvvpackage edu.prz.delivery.orders.domain.foodorder;
+package edu.prz.delivery.orders.domain.foodorder;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
