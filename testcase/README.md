@@ -1,80 +1,29 @@
-# Przypadki testowe - Payment
+# Testcase - Megabyte
 
-## PAY-SMOKE-01 - Sprawdzenie dostępności endpointu GET /payments
+Folder zawiera dokumentację testową przygotowaną dla projektu Megabyte.
 
-Warunki wstępne:
-- aplikacja jest uruchomiona lokalnie,
-- Swagger UI jest dostępny,
-- endpoint /payments jest widoczny w Swaggerze.
+Aktualnie aplikacja udostępnia podstawowe endpointy dla dwóch agregatów:
 
-Kroki:
-1. Wysłać żądanie GET na endpoint /payments.
-2. Sprawdzić kod odpowiedzi HTTP.
-3. Sprawdzić body odpowiedzi.
+- FoodOrder
+- Payment
 
-Oczekiwany rezultat:
-- aplikacja zwraca status HTTP 200 OK,
-- odpowiedź jest w formacie JSON,
-- odpowiedź zawiera pola status oraz message.
+Dostępne endpointy:
 
-Wynik rzeczywisty:
-- HTTP 200 OK,
-- odpowiedź:
-  {
-    "message": "payment-ok",
-    "status": "OK"
-  }
+- GET /food-orders
+- POST /food-orders
+- GET /payments
+- POST /payments
 
-Status:
-- PASS.
+Na obecnym etapie możliwe jest wykonanie podstawowych testów smoke, czyli sprawdzenie, czy endpointy są dostępne i czy zwracają odpowiedź HTTP 200 OK.
 
-## PAY-SMOKE-02 - Sprawdzenie dostępności endpointu POST /payments
+Pełne testy funkcjonalne nie są jeszcze możliwe, ponieważ endpointy zwracają głównie statyczne komunikaty typu "OK" i nie obsługują jeszcze pełnych operacji na danych w bazie.
 
-Warunki wstępne:
-- aplikacja jest uruchomiona lokalnie,
-- endpoint POST /payments jest widoczny w Swaggerze.
+Do dalszych testów wymagane jest dodanie:
 
-Kroki:
-1. Wysłać żądanie POST na endpoint /payments.
-2. Przekazać przykładowe dane testowe.
-3. Sprawdzić kod odpowiedzi HTTP.
-4. Sprawdzić body odpowiedzi.
-
-Oczekiwany rezultat:
-- aplikacja zwraca status HTTP 200 OK,
-- odpowiedź zawiera komunikat potwierdzający wykonanie operacji.
-
-Status:
-- Do wykonania.
-
-## PAY-FUNC-01 - Utworzenie płatności z poprawnymi danymi
-
-Status:
-- Nie można wykonać na obecnym etapie.
-
-Powód:
-- endpoint nie zapisuje jeszcze realnej płatności w bazie danych.
-
-## PAY-FUNC-02 - Pobranie płatności po ID
-
-Status:
-- Nie można wykonać na obecnym etapie.
-
-Powód:
-- brak endpointu GET /payments/{id}.
-
-## PAY-FUNC-03 - Aktualizacja statusu płatności
-
-Status:
-- Nie można wykonać na obecnym etapie.
-
-Powód:
-- brak endpointu PUT/PATCH dla aktualizacji płatności.
-
-## PAY-FUNC-04 - Usunięcie płatności
-
-Status:
-- Nie można wykonać na obecnym etapie.
-
-Powód:
-- brak endpointu DELETE /payments/{id}.
+- pobierania obiektu po ID,
+- pobierania realnej listy obiektów z bazy,
+- zapisu danych do bazy,
+- aktualizacji obiektów,
+- usuwania obiektów,
+- walidacji danych wejściowych,
+- odpowiedzi JSON zawierających dane konkretnych obiektów.
