@@ -27,3 +27,5 @@ Do dalszych testów wymagane jest dodanie:
 - usuwania obiektów,
 - walidacji danych wejściowych,
 - odpowiedzi JSON zawierających dane konkretnych obiektów.
+
+<img width="1904" height="775" alt="image" src="https://github.com/user-attachments/assets/f274049e-3e0b-4caa-a746-5f847c28734c" />
