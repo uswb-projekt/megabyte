@@ -1,5 +1,6 @@
 package edu.prz.delivery.payments.domain.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.prz.delivery.foundation.domain.BaseEntity;
 import edu.prz.delivery.orders.domain.foodorder.FoodOrder;
 import jakarta.persistence.Entity;
@@ -28,5 +29,6 @@ public class Payment extends BaseEntity {
 
   @OneToOne
   @JoinColumn(name = "order_id")
+  @JsonIgnore
   private FoodOrder order;
 }

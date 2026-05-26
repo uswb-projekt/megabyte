@@ -26,6 +26,7 @@ public class FoodOrder extends BaseEntity {
   private String description;
   private LocalDateTime orderTime;
   private LocalDateTime estimatedDeliveryTime;
+  private LocalDateTime deliveryTime;
 
   @Enumerated(EnumType.STRING)
   private OrderStatus status;

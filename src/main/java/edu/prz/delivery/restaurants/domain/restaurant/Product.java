@@ -7,23 +7,25 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "restaurants")
+@Table(name = "products")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
-public class Restaurant extends BaseEntity {
+public class Product extends BaseEntity {
 
   private String name;
-  private String address;
-  private String openingHours;
-  private String contactInfo;
+  private String description;
+  private String category;
+  private BigDecimal price;
+  private boolean available;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @JoinColumn(name = "restaurant_id")
-  private List<Product> products = new ArrayList<>();
+  @JoinColumn(name = "product_id")
+  private List<ProductVariant> variants = new ArrayList<>();
 }
