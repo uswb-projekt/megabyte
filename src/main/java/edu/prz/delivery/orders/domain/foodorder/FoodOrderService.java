@@ -1,5 +1,7 @@
 package edu.prz.delivery.orders.domain.foodorder;
 
+import edu.prz.delivery.foundation.exceptions.ConflictException;
+import edu.prz.delivery.foundation.exceptions.ResourceNotFoundException;
 import edu.prz.delivery.payments.domain.payment.Payment;
 import edu.prz.delivery.payments.domain.payment.PaymentMethod;
 import edu.prz.delivery.payments.domain.payment.PaymentStatus;
@@ -52,10 +54,60 @@ public class FoodOrderService {
     return repository.save(order);
   }
 
+  public void validateTransition(OrderStatus current, OrderStatus target) {
+    if (current == target) {
+      return;
+    }
+    boolean allowed = false;
+    switch (current) {
+      case PENDING:
+        allowed = (target == OrderStatus.ACCEPTED || target == OrderStatus.CANCELLED);
+        break;
+      case ACCEPTED:
+        allowed = (target == OrderStatus.IN_PREPARATION || target == OrderStatus.CANCELLED || target == OrderStatus.IN_DELIVERY);
+        break;
+      case IN_PREPARATION:
+        allowed = (target == OrderStatus.READY_FOR_PICKUP || target == OrderStatus.CANCELLED || target == OrderStatus.IN_DELIVERY);
+        break;
+      case READY_FOR_PICKUP:
+        allowed = (target == OrderStatus.IN_DELIVERY || target == OrderStatus.CANCELLED);
+        break;
+      case IN_DELIVERY:
+        allowed = (target == OrderStatus.DELIVERED || target == OrderStatus.CANCELLED);
+        break;
+      case DELIVERED:
+      case CANCELLED:
+        allowed = false;
+        break;
+    }
+    if (!allowed) {
+      throw new ConflictException("Niedozwolona zmiana statusu zamówienia z " + current + " na " + target);
+    }
+  }
+
+  @Transactional
+  public FoodOrder patchStatus(Long id, OrderStatus targetStatus) {
+    FoodOrder order = repository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID " + id));
+    validateTransition(order.getStatus(), targetStatus);
+    order.setStatus(targetStatus);
+    
+    if (targetStatus == OrderStatus.DELIVERED) {
+      order.setDeliveryTime(LocalDateTime.now());
+      if (order.getPayment() != null) {
+        order.getPayment().setStatus(PaymentStatus.COMPLETED);
+      }
+    }
+    
+    return repository.save(order);
+  }
+
   @Transactional
   public FoodOrder payOrder(Long id, PaymentMethod method, BigDecimal amount) {
     FoodOrder order = repository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID " + id));
+    
+    validateTransition(order.getStatus(), OrderStatus.ACCEPTED);
     
     Payment payment = new Payment();
     payment.setAmount(amount);
@@ -77,7 +129,10 @@ public class FoodOrderService {
   @Transactional
   public FoodOrder pickupOrder(Long id, Long courierId) {
     FoodOrder order = repository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID " + id));
+    
+    validateTransition(order.getStatus(), OrderStatus.IN_DELIVERY);
+    
     order.setStatus(OrderStatus.IN_DELIVERY);
     order.setCourierId(courierId);
     return repository.save(order);
@@ -86,7 +141,10 @@ public class FoodOrderService {
   @Transactional
   public FoodOrder deliverOrder(Long id) {
     FoodOrder order = repository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID " + id));
+    
+    validateTransition(order.getStatus(), OrderStatus.DELIVERED);
+    
     order.setStatus(OrderStatus.DELIVERED);
     order.setDeliveryTime(LocalDateTime.now());
     

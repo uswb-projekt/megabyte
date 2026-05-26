@@ -1,5 +1,6 @@
 package edu.prz.delivery.restaurants.domain.restaurant;
 
+import edu.prz.delivery.foundation.exceptions.ResourceNotFoundException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class RestaurantService {
   @Transactional
   public Restaurant addProduct(Long restaurantId, Product product) {
     Restaurant restaurant = repository.findById(restaurantId)
-        .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with ID " + restaurantId));
     restaurant.getProducts().add(product);
     return repository.save(restaurant);
   }
@@ -49,8 +50,11 @@ public class RestaurantService {
   @Transactional
   public Restaurant removeProduct(Long restaurantId, Long productId) {
     Restaurant restaurant = repository.findById(restaurantId)
-        .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
-    restaurant.getProducts().removeIf(product -> product.getId() != null && product.getId().equals(productId));
+        .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with ID " + restaurantId));
+    boolean removed = restaurant.getProducts().removeIf(product -> product.getId() != null && product.getId().equals(productId));
+    if (!removed) {
+      throw new ResourceNotFoundException("Product not found with ID " + productId + " in restaurant " + restaurantId);
+    }
     return repository.save(restaurant);
   }
 }

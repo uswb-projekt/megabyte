@@ -1,10 +1,20 @@
 package edu.prz.delivery;
 
+import edu.prz.delivery.orders.domain.foodorder.FoodOrder;
+import edu.prz.delivery.orders.domain.foodorder.FoodOrderRepository;
+import edu.prz.delivery.orders.domain.foodorder.OrderItem;
+import edu.prz.delivery.orders.domain.foodorder.OrderStatus;
+import edu.prz.delivery.payments.domain.payment.Payment;
+import edu.prz.delivery.payments.domain.payment.PaymentMethod;
+import edu.prz.delivery.payments.domain.payment.PaymentRepository;
+import edu.prz.delivery.payments.domain.payment.PaymentStatus;
 import edu.prz.delivery.restaurants.domain.restaurant.Product;
 import edu.prz.delivery.restaurants.domain.restaurant.ProductVariant;
 import edu.prz.delivery.restaurants.domain.restaurant.Restaurant;
 import edu.prz.delivery.restaurants.domain.restaurant.RestaurantRepository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +29,11 @@ public class DeliveryApplication {
 	}
 
 	@Bean
-	public CommandLineRunner seedDemoData(RestaurantRepository restaurantRepository) {
+	public CommandLineRunner seedDemoData(
+			RestaurantRepository restaurantRepository,
+			FoodOrderRepository foodOrderRepository,
+			PaymentRepository paymentRepository
+	) {
 		return args -> {
 			if (restaurantRepository.count() == 0) {
 				// 1. Seed Italian Restaurant
@@ -186,7 +200,103 @@ public class DeliveryApplication {
 				sweetRes.getProducts().add(muffin);
 
 				// Save all to database
-				restaurantRepository.saveAll(List.of(pizzaRes, burgerRes, sushiRes, tacoRes, saladRes, sweetRes));
+				List<Restaurant> savedRestaurants = restaurantRepository.saveAll(List.of(
+						pizzaRes, burgerRes, sushiRes, tacoRes, saladRes, sweetRes
+				));
+
+				// 7. Seed Mock Orders & Payments
+				if (foodOrderRepository.count() == 0) {
+					Restaurant savedPizza = savedRestaurants.get(0);
+					Restaurant savedBurger = savedRestaurants.get(1);
+					Restaurant savedSushi = savedRestaurants.get(2);
+
+					// Order 1: PENDING (Waiting for payment)
+					FoodOrder order1 = new FoodOrder();
+					order1.setRestaurantId(savedPizza.getId());
+					order1.setCustomerId(101L);
+					order1.setDeliveryAddress("ul. Chopina 15, Rzeszów");
+					order1.setDescription("Prośba o podwójny ser na marghericie.");
+					order1.setStatus(OrderStatus.PENDING);
+					order1.setOrderTime(LocalDateTime.now().minusMinutes(30));
+					order1.setEstimatedDeliveryTime(LocalDateTime.now().plusMinutes(15));
+
+					OrderItem o1Item1 = new OrderItem();
+					o1Item1.setProductId(savedPizza.getProducts().get(0).getId());
+					o1Item1.setProductName(savedPizza.getProducts().get(0).getName());
+					o1Item1.setQuantity(2);
+					o1Item1.setPrice(savedPizza.getProducts().get(0).getPrice());
+
+					OrderItem o1Item2 = new OrderItem();
+					o1Item2.setProductId(savedPizza.getProducts().get(1).getId());
+					o1Item2.setProductName(savedPizza.getProducts().get(1).getName());
+					o1Item2.setQuantity(1);
+					o1Item2.setPrice(savedPizza.getProducts().get(1).getPrice());
+
+					order1.setItems(new ArrayList<>(List.of(o1Item1, o1Item2)));
+					foodOrderRepository.save(order1);
+
+					// Order 2: ACCEPTED (Paid, in progress)
+					FoodOrder order2 = new FoodOrder();
+					order2.setRestaurantId(savedBurger.getId());
+					order2.setCustomerId(102L);
+					order2.setDeliveryAddress("al. Rejtana 20, Rzeszów");
+					order2.setDescription("Bez cebuli w burgerze.");
+					order2.setStatus(OrderStatus.ACCEPTED);
+					order2.setOrderTime(LocalDateTime.now().minusMinutes(15));
+					order2.setEstimatedDeliveryTime(LocalDateTime.now().plusMinutes(30));
+
+					OrderItem o2Item1 = new OrderItem();
+					o2Item1.setProductId(savedBurger.getProducts().get(0).getId());
+					o2Item1.setProductName(savedBurger.getProducts().get(0).getName());
+					o2Item1.setQuantity(1);
+					o2Item1.setPrice(savedBurger.getProducts().get(0).getPrice());
+
+					OrderItem o2Item2 = new OrderItem();
+					o2Item2.setProductId(savedBurger.getProducts().get(1).getId());
+					o2Item2.setProductName(savedBurger.getProducts().get(1).getName());
+					o2Item2.setQuantity(2);
+					o2Item2.setPrice(savedBurger.getProducts().get(1).getPrice());
+
+					order2.setItems(new ArrayList<>(List.of(o2Item1, o2Item2)));
+
+					Payment payment2 = new Payment();
+					payment2.setAmount(new BigDecimal("65.00")); // 29 + 18*2
+					payment2.setMethod(PaymentMethod.ONLINE);
+					payment2.setStatus(PaymentStatus.COMPLETED);
+					payment2.setOrder(order2);
+					order2.setPayment(payment2);
+
+					foodOrderRepository.save(order2);
+
+					// Order 3: DELIVERED (Finished successfully)
+					FoodOrder order3 = new FoodOrder();
+					order3.setRestaurantId(savedSushi.getId());
+					order3.setCustomerId(103L);
+					order3.setCourierId(501L);
+					order3.setDeliveryAddress("ul. Piłsudskiego 5, Rzeszów");
+					order3.setDescription("Dzwonić domofonem nr 4.");
+					order3.setStatus(OrderStatus.DELIVERED);
+					order3.setOrderTime(LocalDateTime.now().minusHours(2));
+					order3.setEstimatedDeliveryTime(LocalDateTime.now().minusHours(1).minusMinutes(15));
+					order3.setDeliveryTime(LocalDateTime.now().minusHours(1).minusMinutes(20));
+
+					OrderItem o3Item1 = new OrderItem();
+					o3Item1.setProductId(savedSushi.getProducts().get(0).getId());
+					o3Item1.setProductName(savedSushi.getProducts().get(0).getName());
+					o3Item1.setQuantity(2);
+					o3Item1.setPrice(savedSushi.getProducts().get(0).getPrice());
+
+					order3.setItems(new ArrayList<>(List.of(o3Item1)));
+
+					Payment payment3 = new Payment();
+					payment3.setAmount(new BigDecimal("64.00")); // 32 * 2
+					payment3.setMethod(PaymentMethod.ONLINE);
+					payment3.setStatus(PaymentStatus.COMPLETED);
+					payment3.setOrder(order3);
+					order3.setPayment(payment3);
+
+					foodOrderRepository.save(order3);
+				}
 			}
 		};
 	}
