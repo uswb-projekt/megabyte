@@ -1,1 +1,9 @@
-
+{
+  "version": "1",
+  "name": "Megabyte API Testy",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
