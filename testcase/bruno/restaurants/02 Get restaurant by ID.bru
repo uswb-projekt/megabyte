@@ -1,0 +1,16 @@
+meta {
+  name: 02 Get restaurant by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,15 @@
+meta {
+  name: 08 Delete product from restaurant
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products/{{productId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

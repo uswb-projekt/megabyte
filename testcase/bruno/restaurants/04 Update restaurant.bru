@@ -1,0 +1,15 @@
+meta {
+  name: 04 Update restaurant
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

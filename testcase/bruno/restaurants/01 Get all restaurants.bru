@@ -1,5 +1,5 @@
 meta {
-  name: 01 Wyświetl wszystkie restauracje
+  name: 01 Get all restaurants
   type: http
   seq: 1
 }
@@ -7,11 +7,9 @@ meta {
 get {
   url: {{baseUrl}}/restaurants
   body: none
-  auth: none
+  auth: inherit
 }
 
-headers {
-}
-
-params {
+settings {
+  encodeUrl: true
 }

@@ -1,0 +1,15 @@
+meta {
+  name: 07 Add product to restaurant
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

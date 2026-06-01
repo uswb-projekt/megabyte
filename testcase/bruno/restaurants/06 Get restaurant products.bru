@@ -1,0 +1,15 @@
+meta {
+  name: 06 Get restaurant products
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
