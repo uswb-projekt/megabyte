@@ -1,0 +1,15 @@
+meta {
+  name: N01 Wyszukanie nieistniejącej restauracji po numerze ID
+  type: http
+  seq: 9
+}
+
+get {
+  url: /restaurants/{id}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

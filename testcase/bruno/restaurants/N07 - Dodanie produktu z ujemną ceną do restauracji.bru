@@ -1,0 +1,15 @@
+meta {
+  name: N07 - Dodanie produktu z ujemną ceną do restauracji
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

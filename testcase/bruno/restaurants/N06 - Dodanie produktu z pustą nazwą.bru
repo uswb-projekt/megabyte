@@ -1,0 +1,15 @@
+meta {
+  name: N06 - Dodanie produktu z pustą nazwą
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

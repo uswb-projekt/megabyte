@@ -1,0 +1,15 @@
+meta {
+  name: N04 - Aktualizacja nieistniejącej restauracji
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/restaurants/{restaurantid}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

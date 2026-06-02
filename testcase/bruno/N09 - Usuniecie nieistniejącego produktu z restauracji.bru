@@ -1,0 +1,15 @@
+meta {
+  name: N09 - Usuniecie nieistniejącego produktu z restauracji
+  type: http
+  seq: 4
+}
+
+delete {
+  url: /restaurants/{id}/products/{productId}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
