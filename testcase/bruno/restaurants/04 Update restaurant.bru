@@ -6,10 +6,20 @@ meta {
 
 put {
   url: {{baseUrl}}/restaurants/{{restaurantId}}
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "name": "Updated Test Restaurant",
+    "address": "Zmieniona 2, Rzeszow",
+    "openingHours": "09:00-21:00",
+    "contactInfo": "987654321"
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
