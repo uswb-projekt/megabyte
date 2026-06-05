@@ -242,3 +242,66 @@
 
 ![](../screenshots-FO/Screenshot_9.png)
 
+## Process test cases
+
+### FO-PROC-01 – Zmiana statusu zamówienia na ACCEPTED
+
+| Pole | Wartość |
+|---|---|
+| **Endpoint** | `/food-orders/37/status?status=ACCEPTED` |
+| **Metoda** | `PATCH` |
+| **Dane wejściowe** | Parametr query: `status=ACCEPTED` |
+| **Oczekiwany wynik** | `200 OK` oraz zmiana statusu zamówienia na `ACCEPTED` |
+| **Wynik rzeczywisty** | `200 OK`, status zamówienia został zmieniony na `ACCEPTED` |
+| **Status** | PASS |
+| **Uwagi** | Brak |
+
+![](../screenshots-FO/Screenshot_10.png)
+
+---
+
+### FO-PROC-02 – Opłacenie zamówienia
+
+| Pole | Wartość |
+|---|---|
+| **Endpoint** | `/food-orders/37/pay?method=ONLINE&amount=72.00` |
+| **Metoda** | `POST` |
+| **Dane wejściowe** | Brak |
+| **Oczekiwany wynik** | `200 OK` oraz oznaczenie zamówienia jako opłacone |
+| **Wynik rzeczywisty** | `200 OK` oraz ustawienie atrybutów płatności |
+| **Status** | PASS |
+| **Uwagi** | Brak |
+
+![](../screenshots-FO/Screenshot_11.png)
+
+---
+
+### FO-PROC-03 – Odbiór zamówienia przez kuriera
+
+| Pole | Wartość |
+|---|---|
+| **Endpoint** | `/food-orders/37/pickup?courierId=10` |
+| **Metoda** | `POST` |
+| **Dane wejściowe** | Brak |
+| **Oczekiwany wynik** | `200 OK` oraz zmiana statusu zamówienia na `IN_DELIVERY` |
+| **Wynik rzeczywisty** | `200 OK`, zmiana statusu zamówienia z `ACCEPTED` na `IN_DELIVERY` |
+| **Status** | PASS |
+| **Uwagi** | Brak |
+
+![](../screenshots-FO/Screenshot_12.png)
+
+---
+
+### FO-PROC-04 – Dostarczenie zamówienia
+
+| Pole | Wartość |
+|---|---|
+| **Endpoint** | `/food-orders/37/deliver` |
+| **Metoda** | `POST` |
+| **Dane wejściowe** | Brak |
+| **Oczekiwany wynik** | `200 OK` oraz zmiana statusu zamówienia na `DELIVERED` |
+| **Wynik rzeczywisty** | `200 OK`, zmiana statusu zamówienia z `IN_DELIVERY` na `DELIVERED` |
+| **Status** | PASS |
+| **Uwagi** | Brak |
+
+![](../screenshots-FO/Screenshot_13.png)
