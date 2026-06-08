@@ -64,5 +64,5 @@ Dodatkowo, proces finalizuje płatność. Każde zamówienie posiada powiązaną
 <img width="495" height="376" alt="Diagram Przypadków Użycia - Restauracje" src="https://github.com/user-attachments/assets/03e5d212-9376-4642-b14b-49f7b31b31e0" />
 
 ### Kontekst Oferta
-<img width="900" alt="oferta" src="(https://github.com/uswb-projekt/megabyte/blob/main/docs/ERD/konteksty/oferta.png?raw=true)" />
-<img width="500" alt="Diagram Przypadków Użycia - Oferta" src="LINK_DO_DIAGRAMU_UC" />
+<img width="1164" height="518" alt="oferta " src="https://github.com/user-attachments/assets/c57dd9a1-4d78-44a0-a414-8d748ba5c6c9" />
+
