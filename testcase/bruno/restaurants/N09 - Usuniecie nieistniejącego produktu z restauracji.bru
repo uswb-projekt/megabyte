@@ -5,11 +5,12 @@ meta {
 }
 
 delete {
-  url: /restaurants/{id}/products/{productId}
-  body: none
+  url: {{baseUrl}}/restaurants/{{restaurantId}}/products/{{productId}}
+  body: json
   auth: inherit
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

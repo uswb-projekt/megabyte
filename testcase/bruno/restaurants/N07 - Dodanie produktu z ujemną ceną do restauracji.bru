@@ -6,10 +6,21 @@ meta {
 
 post {
   url: {{baseUrl}}/restaurants/{{restaurantId}}/products
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "name": "Kurczak w sosie Deflacji",
+    "description": "Produkt Deflacyjny!!",
+    "category": "TEST",
+    "price": -10.00,
+    "available": true
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
