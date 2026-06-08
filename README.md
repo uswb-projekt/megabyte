@@ -65,4 +65,14 @@ Dodatkowo, proces finalizuje płatność. Każde zamówienie posiada powiązaną
 
 ### Kontekst Oferta
 <img width="1164" height="518" alt="oferta " src="https://github.com/user-attachments/assets/c57dd9a1-4d78-44a0-a414-8d748ba5c6c9" />
+<img width="640" height="399" alt="Diagram Przypadków Użycia - Oferta" src="https://github.com/user-attachments/assets/6ca58990-bd6d-4d8a-9aff-b529d3aa60f9" />
+
+### Kontekst Płatności
+<img width="1114" height="440" alt="platnosci" src="https://github.com/user-attachments/assets/75e2b3b7-b184-46e3-973e-f3e9d295daa7" />
+<img width="443" height="274" alt="Diagram Przypadków Użycia - Płatności" src="https://github.com/user-attachments/assets/6bd3cc64-d12d-4f0b-8a04-22a4916e9fb6" />
+
+
+
+
+
 
