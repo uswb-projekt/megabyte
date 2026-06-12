@@ -1,4 +1,10 @@
-# System obsługi zamówień z dostawą
+# Aplikacja Megabyte (System obsługi zamówień z dostawą)
+
+## Dziedzina i konteksty
+
+Aplikacja modeluje dziedzinę zamawiania i logistyki dostarczania produktów z restauracji oraz sklepów. W modelu wyodrębniono 8 poddziedzin: zamówienia (dziedzina główna), autentykacja, dostarczanie, marketing, oferta, płatności, reklamacje oraz restauracje.
+
+W każdej z poddziedzin zlokalizowany jest kontekst ograniczony: Zamówienia (Food Orders), Autentykacja (Authentication), Dostarczanie (Delivery), Marketing (Marketing), Oferta (Menu), Płatności (Payments), Reklamacje (Complaints), Restauracje (Restaurants).
 
 ## Uruchomienie projektu
 
