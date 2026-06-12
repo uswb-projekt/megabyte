@@ -20,6 +20,12 @@ Na systemach Linux/macOS:
 ./gradlew clean bootRun
 ```
 
+Aplikacja używa bazy In-Memory H2 i przy starcie automatycznie wypełnia się danymi testowymi (restauracje i zamówienia). Dostęp do konsoli bazy danych:
+
+```text
+http://localhost:8080/h2-console
+```
+
 Po uruchomieniu aplikacji należy sprawdzić Swagger UI:
 
 ```text
